@@ -1,4 +1,4 @@
-# CodeServer-VPS
+# DockerInstall
 **[Ubuntu 20.04 (LTS) / Debian 10]**
 <h3 align="center">Supported Linux Distribution</h3>
 <p align="center">
