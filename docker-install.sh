@@ -1,6 +1,8 @@
 #!/bin/bash
 clear
 echo "Starting Docker Installation..."
+
+apt install lsb-core >> /dev/null
 # Function to install Docker on Ubuntu 20.04
 install_docker_ubuntu() {
   sudo apt-get update
