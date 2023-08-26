@@ -2,7 +2,7 @@
 clear
 echo "Starting Docker Installation..."
 
-apt install lsb-core >> /dev/null
+apt-get update && apt-get install -y lsb-release && apt-get clean all >> /dev/null
 # Function to install Docker on Ubuntu 20.04
 install_docker_ubuntu() {
   sudo apt-get update
@@ -28,9 +28,9 @@ install_docker_debian() {
 }
 
 # Check if the system is running Debian 10 or Ubuntu 20.04
-if [[ "$(lsb_release -is)" == "Debian"]]; then
+if [[ "$(lsb_release -is)" == "Debian" ]]; then
   install_docker_debian
-elif [[ "$(lsb_release -is)" == "Ubuntu"]]; then
+elif [[ "$(lsb_release -is)" == "Ubuntu" ]]; then
   install_docker_ubuntu
 else
   echo "This script only supports Debian 10 and Ubuntu 20.04."
