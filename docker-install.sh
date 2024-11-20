@@ -7,8 +7,8 @@ apt-get update && apt-get install -y lsb-release && apt-get clean all >> /dev/nu
 install_docker_ubuntu() {
   sudo apt-get update
   sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
   sudo apt-get install -y docker-ce docker-ce-cli containerd.io
   sudo systemctl enable docker
@@ -35,12 +35,4 @@ elif [[ "$(lsb_release -is)" == "Ubuntu" ]]; then
 else
   echo "This script only supports Debian 10 and Ubuntu 20.04."
   exit 1
-fi
-
-# Optionally add the current user to the Docker group
-read -p "Do you want to add the current user to the Docker group? (y/n): " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  sudo usermod -aG docker $USER
-  echo "You may need to log out and log back in for the group changes to take effect."
 fi
