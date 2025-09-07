@@ -18,11 +18,17 @@ install_docker_ubuntu() {
 # Function to install Docker on Debian 10
 install_docker_debian() {
   apt-get update
-  apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+  apt-get install -y apt-transport-https ca-certificates curl gnupg2 lsb-release
+  # Add Docker's official GPG key
   curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/docker-archive-keyring.gpg > /dev/null
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" |  tee /etc/apt/sources.list.d/docker.list > /dev/null
+  # Add Docker repository for Debian 10/11
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   apt-get update
-  apt-get install -y docker-ce docker-ce-cli containerd.io
+  # Try to install Docker packages
+  if ! apt-get install -y docker-ce docker-ce-cli containerd.io; then
+    echo "Failed to install Docker packages. Please check your network and repository configuration."
+    exit 2
+  fi
   systemctl enable docker
   systemctl start docker
 }
